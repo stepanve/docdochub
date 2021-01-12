@@ -8,14 +8,32 @@
     "type-check": "tsc"
   },
   "dependencies": {
+    "@firebase/firestore": "^2.1.2",
+    "@fortawesome/fontawesome-free": "^5.15.2",
+    "@fortawesome/free-solid-svg-icons": "^5.15.2",
+    "@fortawesome/react-fontawesome": "^0.1.14",
+    "@next-tools/dynamic": "^0.0.11",
+    "autoprefixer": "^10.2.1",
+    "axios": "^0.21.1",
+    "firebase": "^8.2.2",
     "next": "latest",
+    "postcss": "^8.2.4",
     "react": "^16.12.0",
-    "react-dom": "^16.12.0"
+    "react-codemirror2": "^7.2.1",
+    "react-dom": "^16.12.0",
+    "react-markdown": "^5.0.3",
+    "react-redux": "^7.2.2",
+    "redux": "^4.0.5",
+    "scrape-it": "^5.2.4",
+    "tailwindcss": "^2.0.2"
   },
   "devDependencies": {
+    "@types/codemirror": "^0.0.106",
     "@types/node": "^12.12.21",
     "@types/react": "^16.9.16",
     "@types/react-dom": "^16.9.4",
+    "@types/react-redux": "^7.1.15",
+    "dotenv-webpack": "^6.0.0",
     "typescript": "4.0"
   },
   "license": "MIT"

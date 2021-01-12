@@ -1,46 +1,47 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import FloatActionButton from "../components/FloatActionButton";
-import Layout from "../components/Layout";
-import Modal from "../components/Modal";
-import BookshelfList from "../components/BookshelfList";
-import { AuthUserInfo } from "../modules/auth";
-import { listBookshelf } from "../modules/bookshlef";
-import { addMyBookshelf } from "../modules/my-bookshlef";
-import { RootState } from "../store";
+import BookshelfList from "../../components/BookshelfList";
+import FloatActionButton from "../../components/FloatActionButton";
+import Layout from "../../components/Layout";
+import Modal from "../../components/Modal";
+import { startLoading, stopLoading } from "../../modules/isLoading";
+import { addMyBookshelf, listBookshelf } from "../../modules/my-bookshlef";
+import { RootState } from "../../store";
 
 const IndexPage = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
 
   const [titleInput, setInputTitle] = useState<string>("");
 
-  // TODO 検索で利用したい
-  const [query, _setQuery] = useState<string>("");
+  const auth = useSelector((state: RootState) => state.auth);
 
-  const auth: AuthUserInfo = useSelector((state: RootState) => state.auth);
-
-  const bookshlef = useSelector((state: RootState) => state.bookshelf);
+  const bookshlef = useSelector((state: RootState) => state.myBookshelf);
 
   const dispatch = useDispatch();
 
-  const fetchBookshelf: Function = async () => dispatch(await listBookshelf());
+  const fetchBookshelf: Function = async (userId: string) =>
+    dispatch(await listBookshelf(userId));
 
   const handlePositiveBtnClick = async () => {
     if (auth.authUser) {
       dispatch(await addMyBookshelf(titleInput, auth.authUser));
       setShowModal(false);
-      fetchBookshelf();
+      fetchBookshelf(auth.authUser.id);
     }
   };
 
   useEffect(() => {
-    fetchBookshelf();
-  }, [query]);
+    dispatch(startLoading());
+    if (auth.authUser) {
+      fetchBookshelf(auth.authUser.id);
+    }
+    dispatch(stopLoading());
+  }, [auth.authUser]);
 
   return (
     <Layout title="ようこそ、DocDocHubへ">
       <h1 className="text-5xl text-center text-gray-700 bg-primary dark:text-gray-100">
-        ようこそ、DocDocHubへ
+        自分の本棚
       </h1>
 
       <BookshelfList bookshelfs={bookshlef}></BookshelfList>
