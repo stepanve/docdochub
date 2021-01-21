@@ -11,6 +11,7 @@ import axios from "axios";
 import { Book } from "../../interfaces";
 import { updateMyBookshelf } from "../../modules/my-bookshlef";
 import { getBook } from "../../modules/books";
+import { startLoading, stopLoading } from "../../modules/isLoading";
 
 const BooksPage = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -35,7 +36,11 @@ const BooksPage = () => {
 
   useEffect(() => {
     if (id !== undefined) {
-      fetchBooks(id);
+      (async () => {
+        dispatch(startLoading());
+        await fetchBooks(id);
+        dispatch(stopLoading());
+      })();
     }
   }, [id]);
 
@@ -81,9 +86,9 @@ const BooksPage = () => {
   const isOwner = bookshelfBooks.userId === auth.authUser?.id;
 
   return (
-    <Layout title={bookshelfBooks.title || `本棚`}>
+    <Layout title={bookshelfBooks.title}>
       <h1 className="text-5xl text-center text-gray-700 bg-primary dark:text-gray-100">
-        {bookshelfBooks.title || `本棚`}
+        {bookshelfBooks.title}
       </h1>
       {books[0] !== null ? (
         <BookshelfDetail
